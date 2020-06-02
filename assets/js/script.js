@@ -1,5 +1,5 @@
 /*********************************************************
- * Schedule JS
+ * Git it done
  * @package git-it-done
  * @author Jeremy C Collins
  * @version Develop
