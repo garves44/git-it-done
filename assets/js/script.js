@@ -26,10 +26,17 @@
 /**
  * 1.1 getUserRepos()
  */
-var getUserRepos = function() {
-    fetch("https://api.github.com/users/octocat/repos");
+var getUserRepos = function (user) {
+    // Format the github API url
+    var apiUrl = "https://api.github.com/users/" + user + "/repos";
+
+    // Make a request to the URL provided
+    fetch(apiUrl).then(function (response) {
+        response.json().then(function (data) {
+            console.log(data);
+        });
+    });
 };
 
-
 /* ===============[ 2. Document Ready ]=========================*/
-getUserRepos();
+getUserRepos("microsoft");
