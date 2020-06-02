@@ -11,6 +11,8 @@
  *   1.1 getUserRepos()
  *   1.2 formSubmitHandler()
  *   1.3 displayRepos()
+ *   1.4 getFeaturedRepos()
+ *   1.5 buttonClickHandler()
  * 
  * 2. Document Ready
  *   2.1 Render Schedule on ready
@@ -22,7 +24,8 @@
 var userFormEl = document.getElementById("user-form");
 var nameInputEl = document.getElementById("username");
 var repoContainerEl = document.getElementById("repo-container");
-var repoSearchTerm = document.getElementById("repo-search-term")
+var repoSearchTerm = document.getElementById("repo-search-term");
+var languageButtonsEl = document.getElementById("language-buttons");
 
 
 
@@ -98,8 +101,35 @@ var displayRepos = function (repos, searchTerm) {
         repoEl.appendChild(statusEl);
         repoContainerEl.appendChild(repoEl);
     }
+};
+/**
+ * 1.4 getFeaturedRepos()
+ */
+var getFeaturedRepos = function(language) {
+    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
 
-}
+    fetch(apiUrl)
+    .then(function(response){
+        if (response.ok) {
+            response.json().then(function(data){
+                displayRepos(data.items, language);
+            });
+        } else {
+            alert("Error: " + response.statusText);
+        }
+    });
+};
+/**
+ * 1.5 buttonClickHandler()
+ */
+var buttonClickHandler = function(event){
+    var language = event.target.getAttribute("data-language");
+    if (language) {
+        getFeaturedRepos(language);
+        repoContainerEl.textContent = "";
+    }
+};
 
 /* ===============[ 2. Document Ready ]=========================*/
 $("#user-form").on("submit", formSubmitHandler);
+languageButtonsEl.addEventListener("click", buttonClickHandler);
